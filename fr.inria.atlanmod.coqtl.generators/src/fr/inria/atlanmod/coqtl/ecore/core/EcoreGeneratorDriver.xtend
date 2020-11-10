@@ -28,8 +28,13 @@ class EcoreGeneratorDriver {
 	}
 	
 	def static void main(String[] args) {
+		if(args.length < 3){
+			println("Input of Ecore2Coq:");
+			println("1. MetaModel relative path, e.g. resources/TT2BDD/TT.ecore");
+			println("3. Output path, e.g. resources/TT2BDD/TT.v");
+			System.exit(0)
+		}
 		val mm_path = "./resources/C2RMV/Class.ecore"
-		//val mm_path = "./resources/Relational.ecore"
 		val mm_uri = URI.createFileURI(mm_path);
 		val output_path = "./resources/ClassMetamodel.v"
 		val output_uri = URI.createFileURI(output_path);

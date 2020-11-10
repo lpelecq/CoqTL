@@ -18,12 +18,19 @@ class XMIGeneratorDriver {
 	}
 	
 	def static void main(String[] args) {
-		val m_path = "./resources/Class.xmi"
-		val mm_path = "./resources/Class.ecore"
-		//val mm_path = "./resources/Relational.ecore"
+		if(args.length < 3){
+			println("Input of XMI2Coq:");
+			println("1. MetaModel relative path, e.g. resources/TT2BDD/TT.ecore");
+			println("2. Model relative path, e.g. resources/TT2BDD/xor.ttmodel");
+			println("3. Output path, e.g. resources/TT2BDD/xorTT.v");
+			System.exit(0)
+		}
+
+		val m_path = args.get(0)
+		val mm_path = args.get(1)
 		val m_uri = URI.createFileURI(m_path);
 		val mm_uri = URI.createFileURI(mm_path)
-		val output_path = "./resources/output_xmi.v"
+		val output_path = args.get(2)
 		val output_uri = URI.createFileURI(output_path);
 		
 		
