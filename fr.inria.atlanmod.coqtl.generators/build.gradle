@@ -1,36 +1,30 @@
 plugins {
     id 'org.xtext.xtend' version '2.0.8'
-    id 'application'
-    id 'com.github.johnrengelman.shadow' version '6.0.0'
 }
 
-repositories {
-    jcenter()
+repositories.jcenter()
+
+dependencies {
+    compile 'org.eclipse.xtend:org.eclipse.xtend.lib:2.23.0'
+    compile 'org.eclipse.emf:org.eclipse.emf.common:2.20.0'
+    compile 'org.eclipse.emf:org.eclipse.emf.ecore:2.23.0'
+    //compile 'org.eclipse.emf:org.eclipse.emf.ecore.xmi:2.16.0'
+    compile files('libs/org.eclipse.emf.ecore.xmi-2.22.0.jar')
 }
 
 sourceSets {
     main.xtend.srcDirs = ['src']
 }
 
-
-jar {
-    manifest {
-        attributes 'Main-Class': 'fr.inria.atlanmod.coqtl.xmi.core.XMIGeneratorDriver'
-    }
+task 'MetaModel2Coq'(type: JavaExec) {
+    group = 'Execution'
+    description = 'Implements a metamodel in coq (call with "--args=\'<input_metamodel_file_path> <output_coq_file_path>\'")'
+    classpath = sourceSets.main.runtimeClasspath
+    main = 'fr.inria.atlanmod.coqtl.ecore.core.EcoreGeneratorDriver'
 }
-
-
-sourceCompatibility = 8
-
-application {
-    mainClassName = 'fr.inria.atlanmod.coqtl.Ecore.core.EcoreGeneratorDriver'
-}
-
-dependencies {
-    compile 'org.eclipse.xtend:org.eclipse.xtend.lib:2.23.0'
-    compile files(
-        'libs/org.eclipse.emf.common-2.22.0.jar', 
-        'libs/org.eclipse.emf.ecore-2.22.0.jar', 
-        'libs/org.eclipse.emf.ecore.xmi-2.22.0.jar'
-    )
+task 'Model2Coq'(type: JavaExec) {
+    group = 'Execution'
+    description = 'Implements a model in coq from its metamodel (call with "--args=\'<input_model_file_path> <input_metamodel_file_path> <output_coq_file_path>\'")'
+    classpath = sourceSets.main.runtimeClasspath
+    main = 'fr.inria.atlanmod.coqtl.xmi.core.XMIGeneratorDriver'
 }

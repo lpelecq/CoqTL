@@ -44,6 +44,7 @@ class Ecore2Coq {
 		«FOR eClass : ePackage.EClassifiers.filter(typeof(EClass))»
 			Inductive «eClass.name» : Set :=
 			  Build«eClass.name» :
+			  (* id *) string ->
 			  «FOR eAttribute : eClass.EAttributes»
 			    (* «eAttribute.name» *) «AttributeType2Coq(eAttribute)» ->
 			  «ENDFOR»

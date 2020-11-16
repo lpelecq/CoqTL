@@ -35,16 +35,16 @@ class XMI2Coq {
 		«ENDFOR»
 		Definition InputModel : Model «mm_eobject» «mm_elink» :=
 			(BuildModel
-				(«FOR eobject : allEObjects SEPARATOR " :: "»(Build_«mm_eobject» «eobject.eClass.name»«Keywords.PostfixEClass» «BuildEObject(eobject)»)«ENDFOR» :: nil)
+				(
+				«FOR eobject : allEObjects SEPARATOR " :: \n"
+				»(Build_«mm_eobject» «eobject.eClass.name»«Keywords.PostfixEClass» «BuildEObject(eobject)»)«ENDFOR» :: 
+				nil)
 				(«FOR eobject : allEObjects SEPARATOR " :: \n"»«FOR sf : eobject.eClass.EStructuralFeatures.filter(typeof(EReference)) SEPARATOR " :: \n"»(Build_«mm_elink» «eobject.eClass.name»«sf.name.toFirstUpper»«Keywords.PostfixEReference» «BuildELink(eobject, sf)»)«ENDFOR»«ENDFOR» :: nil)
 			).
 	'''
 	
 	def BuildEObject(EObject eobject) '''
-		(Build«eobject.eClass.name» «
-			FOR sf: eobject.eClass.EStructuralFeatures.filter(typeof(EAttribute)) SEPARATOR " "
-			»«EMFUtil.PrintValue(eobject.eGet(sf))»«
-			ENDFOR»)'''
+		(Build«eobject.eClass.name» "«System.identityHashCode(eobject)+"_"+eobject.eClass.name»"«FOR sf: eobject.eClass.EAllAttributes SEPARATOR " "»«IF null != eobject.eGet(sf)»«EMFUtil.PrintValue(eobject.eGet(sf))»«ENDIF»«ENDFOR»)'''
 	
 	def BuildELink(EObject eobject, EStructuralFeature sf)'''
 		«val sf_value = eobject.eGet(sf)»
